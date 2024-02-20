@@ -1,0 +1,38 @@
+diff -Naru a/src/sonic-linux-kernel/patch/0003-arm64-dts-marvell-Add-Armada-98DX2530-SoC-and-RD-AC5.patch b/src/sonic-linux-kernel/patch/0003-arm64-dts-marvell-Add-Armada-98DX2530-SoC-and-RD-AC5.patch
+--- a/src/sonic-linux-kernel/patch/0003-arm64-dts-marvell-Add-Armada-98DX2530-SoC-and-RD-AC5.patch	2023-04-28 16:01:25.669173284 -0700
++++ b/src/sonic-linux-kernel/patch/0003-arm64-dts-marvell-Add-Armada-98DX2530-SoC-and-RD-AC5.patch	2023-04-28 16:21:55.902680102 -0700
+@@ -337,7 +337,7 @@
+ index 000000000..f0ebdb84e
+ --- /dev/null
+ +++ b/arch/arm64/boot/dts/marvell/ac5-98dx35xx-rd.dts
+-@@ -0,0 +1,101 @@
++@@ -0,0 +1,106 @@
+ +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+ +/*
+ + * Device Tree For RD-AC5X.
+@@ -425,17 +425,22 @@
+ +
+ +		partition@0 {
+ +			label = "spi_flash_part0";
+-+			reg = <0x0 0x800000>;
+++			reg = <0x0 0x200000>;
+ +		};
+ +
+ +		parition@1 {
+ +			label = "spi_flash_part1";
+-+			reg = <0x800000 0x700000>;
+++			reg = <0x200000 0x10000>;
+ +		};
+ +
+ +		parition@2 {
+ +			label = "spi_flash_part2";
+-+			reg = <0xF00000 0x100000>;
+++			reg = <0x210000 0xC00000>;
+++		};
+++
+++		parition@3 {
+++			label = "spi_flash_part3";
+++			reg = <0xE10000 0x1F0000>;
+ +		};
+ +	};
+ +};

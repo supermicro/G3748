@@ -1,0 +1,14 @@
+diff -Naru a/src/sonic-linux-kernel/patch/kconfig-inclusions b/src/sonic-linux-kernel/patch/kconfig-inclusions
+--- a/src/sonic-linux-kernel/patch/kconfig-inclusions	2023-05-17 11:28:54.902628662 -0700
++++ b/src/sonic-linux-kernel/patch/kconfig-inclusions	2023-05-17 11:42:22.783687453 -0700
+@@ -109,6 +109,10 @@
+ 
+ [marvell-arm64]
+ CONFIG_MARVELL_AC5_WATCHDOG=m
++# Add for Supermicro SSE-G3748
++CONFIG_I2C_MUX_PCA954x=m
++CONFIG_I2C_MUX_PINCTRL=m
++CONFIG_SENSORS_LM75=m
+ 
+ [armhf]
+ CONFIG_EEPROM_SFF_8436=m
