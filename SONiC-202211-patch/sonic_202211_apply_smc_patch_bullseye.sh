@@ -25,8 +25,8 @@ LOG_FILE=patches_result.log
 FULL_PATH=`pwd`
 
 # Path for 202211 patches
-WGET_PATH="https://raw.githubusercontent.com/supermicro/G3748/master/SONiC-202211-patch/"
 WGET_PATH="https://raw.githubusercontent.com/supermicro/G3748/main/SONiC-202211-patch/"
+
 # Patches for kernel
 KERN_PATCHES="github_202211_src_sonic-linux-kernel_kconfig-inclusions.patch
 	github_202211_src_sonic-linux-kernel_patch.patch"
