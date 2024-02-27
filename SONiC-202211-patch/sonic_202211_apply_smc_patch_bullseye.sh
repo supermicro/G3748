@@ -37,6 +37,8 @@ declare -A SU1=([NAME]="github_202211_device_update_for_g3748_20240131.tgz" [DIR
 declare -A SU2=([NAME]="github_202211_platform_update_for_g3748_20240131.tgz" [DIR]="./")
 declare -A SU3=([NAME]="github_202211_rules_update_for_g3748_20240131.tgz" [DIR]="./")
 	
+# Patches for recent updates
+EXTRA_PATCHES="update_debootstrap_from_deb11u1_to_deb11u2.patch"
 
 log()
 {
@@ -91,6 +93,22 @@ apply_device_platform_updates()
     done
 }
 
+apply_extra_patches()
+{
+    for patch in $EXTRA_PATCHES
+    do
+        echo $patch
+        pushd patches
+        wget -c $WGET_PATH/$patch
+        popd
+            patch -p1 < patches/$patch
+        if [ $? -ne 0 ]; then
+                log "ERROR: Failed to apply patch $patch"
+            exit 1
+        fi
+    done
+}
+
 main()
 {
     sonic_buildimage_commit=`git rev-parse HEAD`
@@ -112,6 +130,7 @@ main()
 
     # Apply patches
     apply_smc_kernel_patches
+    apply_extra_patches
     # Apply submodule patches
     apply_device_platform_updates
 }

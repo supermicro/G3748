@@ -1,0 +1,12 @@
+diff --git a/rules/debootstrap.mk b/rules/debootstrap.mk
+index a74fa22e9..d325932ef 100644
+--- a/rules/debootstrap.mk
++++ b/rules/debootstrap.mk
+@@ -1,6 +1,6 @@
+ # debootstrap package
+ 
+-DEBOOTSTRAP_VERSION = 1.0.123+deb11u1
++DEBOOTSTRAP_VERSION = 1.0.123+deb11u2
+ 
+ export DEBOOTSTRAP_VERSION
+ 
