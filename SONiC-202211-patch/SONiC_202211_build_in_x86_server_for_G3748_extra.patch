@@ -1,0 +1,409 @@
+diff --git a/dockers/docker-base-bullseye/Dockerfile.j2 b/dockers/docker-base-bullseye/Dockerfile.j2
+index bbf860346..bd4af64ed 100644
+--- a/dockers/docker-base-bullseye/Dockerfile.j2
++++ b/dockers/docker-base-bullseye/Dockerfile.j2
+@@ -34,8 +34,8 @@ COPY ["apt-multiple-retries", "/etc/apt/apt.conf.d"]
+ 
+ # Update apt cache and
+ # pre-install fundamental packages
+-RUN apt-get update &&        \
+-    apt-get -y install       \
++RUN apt-get update --allow-insecure-repositories &&        \
++    apt-get -y install --allow-unauthenticated       \
+         curl                 \
+         less                 \
+         perl                 \
+diff --git a/dockers/docker-config-engine-bullseye/Dockerfile.j2 b/dockers/docker-config-engine-bullseye/Dockerfile.j2
+index 700af660a..6f1c09c11 100644
+--- a/dockers/docker-config-engine-bullseye/Dockerfile.j2
++++ b/dockers/docker-config-engine-bullseye/Dockerfile.j2
+@@ -4,8 +4,8 @@ FROM docker-base-bullseye-{{DOCKER_USERNAME}}:{{DOCKER_USERTAG}}
+ ## Make apt-get non-interactive
+ ENV DEBIAN_FRONTEND=noninteractive
+ 
+-RUN apt-get update         && \
+-    apt-get install -y        \
++RUN apt-get update --allow-insecure-repositories        && \
++    apt-get install -y --allow-unauthenticated        \
+         apt-utils             \
+         build-essential       \
+         python3-dev
+diff --git a/dockers/docker-database/Dockerfile.j2 b/dockers/docker-database/Dockerfile.j2
+index f5a8ec083..b80b4da85 100644
+--- a/dockers/docker-database/Dockerfile.j2
++++ b/dockers/docker-database/Dockerfile.j2
+@@ -7,7 +7,7 @@ ARG docker_container_name
+ ENV DEBIAN_FRONTEND=noninteractive
+ 
+ # Update apt's cache of available packages
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories
+ 
+ # Install redis-server
+ RUN apt-get install -y redis-tools redis-server
+diff --git a/dockers/docker-dhcp-relay/Dockerfile.j2 b/dockers/docker-dhcp-relay/Dockerfile.j2
+index b09da7570..6e52d9254 100644
+--- a/dockers/docker-dhcp-relay/Dockerfile.j2
++++ b/dockers/docker-dhcp-relay/Dockerfile.j2
+@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive
+ ENV IMAGE_VERSION=$image_version
+ 
+ # Update apt's cache of available packages
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories
+ 
+ {% if docker_dhcp_relay_debs.strip() -%}
+ # Copy built Debian packages
+diff --git a/dockers/docker-eventd/Dockerfile.j2 b/dockers/docker-eventd/Dockerfile.j2
+index 8d935dc9f..65548aba1 100644
+--- a/dockers/docker-eventd/Dockerfile.j2
++++ b/dockers/docker-eventd/Dockerfile.j2
+@@ -12,7 +12,7 @@ ENV DEBIAN_FRONTEND=noninteractive
+ ENV IMAGE_VERSION=$image_version
+ 
+ # Update apt's cache of available packages
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories
+ 
+ {% if docker_eventd_debs.strip() -%}
+ # Copy built Debian packages
+diff --git a/dockers/docker-fpm-frr/Dockerfile.j2 b/dockers/docker-fpm-frr/Dockerfile.j2
+index d15fc1846..7c45dc38e 100644
+--- a/dockers/docker-fpm-frr/Dockerfile.j2
++++ b/dockers/docker-fpm-frr/Dockerfile.j2
+@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive
+ 
+ # Update apt's cache of available packages
+ # Install required packages
+-RUN apt-get update   && \
++RUN apt-get update --allow-insecure-repositories  && \
+     apt-get install -y  \
+         libc-ares2      \
+         iproute2        \
+diff --git a/dockers/docker-iccpd/Dockerfile.j2 b/dockers/docker-iccpd/Dockerfile.j2
+index 42a73b4cd..da938a708 100644
+--- a/dockers/docker-iccpd/Dockerfile.j2
++++ b/dockers/docker-iccpd/Dockerfile.j2
+@@ -6,7 +6,7 @@ ARG docker_container_name
+ ## Make apt-get non-interactive
+ ENV DEBIAN_FRONTEND=noninteractive
+ 
+-RUN apt-get update && \
++RUN apt-get update --allow-insecure-repositories && \
+     apt-get install -y ebtables
+ 
+ COPY \
+diff --git a/dockers/docker-lldp/Dockerfile.j2 b/dockers/docker-lldp/Dockerfile.j2
+index 9bc641852..1401e35c9 100644
+--- a/dockers/docker-lldp/Dockerfile.j2
++++ b/dockers/docker-lldp/Dockerfile.j2
+@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive
+ ENV IMAGE_VERSION=$image_version
+ 
+ # Update apt's cache of available packages
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories
+ 
+ {% if docker_lldp_debs.strip() -%}
+ # Copy locally-built Debian package dependencies
+diff --git a/dockers/docker-macsec/Dockerfile.j2 b/dockers/docker-macsec/Dockerfile.j2
+index 3ec18b137..0fa6cc777 100644
+--- a/dockers/docker-macsec/Dockerfile.j2
++++ b/dockers/docker-macsec/Dockerfile.j2
+@@ -6,7 +6,7 @@ ARG docker_container_name
+ ## Make apt-get non-interactive
+ ENV DEBIAN_FRONTEND=noninteractive
+ 
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories
+ 
+ {% if docker_macsec_debs.strip() -%}
+ # Copy locally-built Debian package dependencies
+diff --git a/dockers/docker-mux/Dockerfile.j2 b/dockers/docker-mux/Dockerfile.j2
+index 5908c432e..f612a672a 100755
+--- a/dockers/docker-mux/Dockerfile.j2
++++ b/dockers/docker-mux/Dockerfile.j2
+@@ -6,7 +6,7 @@ ARG docker_container_name
+ ## Make apt-get non-interactive
+ ENV DEBIAN_FRONTEND=noninteractive
+ 
+-RUN apt-get update &&       \
++RUN apt-get update --allow-insecure-repositories &&       \
+     apt-get install -f -y   \
+         libmnl0
+ 
+diff --git a/dockers/docker-nat/Dockerfile.j2 b/dockers/docker-nat/Dockerfile.j2
+index 0c0e6089a..21783eedf 100644
+--- a/dockers/docker-nat/Dockerfile.j2
++++ b/dockers/docker-nat/Dockerfile.j2
+@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive
+ 
+ ## Install redis-tools dependencies
+ ## TODO: implicitly install dependencies
+-RUN apt-get update        \
++RUN apt-get update --allow-insecure-repositories       \
+ && apt-get install -f -y \
+        libelf1           \
+        libmnl0           \
+diff --git a/dockers/docker-orchagent/Dockerfile.j2 b/dockers/docker-orchagent/Dockerfile.j2
+index b8b95a913..c15d855fb 100755
+--- a/dockers/docker-orchagent/Dockerfile.j2
++++ b/dockers/docker-orchagent/Dockerfile.j2
+@@ -6,7 +6,7 @@ ARG docker_container_name
+ # Make apt-get non-interactive
+ ENV DEBIAN_FRONTEND=noninteractive
+ 
+-RUN apt-get update &&       \
++RUN apt-get update --allow-insecure-repositories &&       \
+     apt-get install -f -y   \
+         ifupdown            \
+         arping              \
+diff --git a/dockers/docker-platform-monitor/Dockerfile.j2 b/dockers/docker-platform-monitor/Dockerfile.j2
+index 6dbb36932..db5c4c015 100755
+--- a/dockers/docker-platform-monitor/Dockerfile.j2
++++ b/dockers/docker-platform-monitor/Dockerfile.j2
+@@ -11,8 +11,8 @@ ENV DEBIAN_FRONTEND=noninteractive
+ ENV IMAGE_VERSION=$image_version
+ 
+ # Install required packages
+-RUN apt-get update &&   \
+-    apt-get install -y  \
++RUN apt-get update --allow-insecure-repositories &&   \
++    apt-get install -y --allow-unauthenticated \
+         build-essential \
+         python3-dev     \
+         ipmitool        \
+diff --git a/dockers/docker-ptf/Dockerfile.j2 b/dockers/docker-ptf/Dockerfile.j2
+index 6c5ee3c6b..1fa545dfb 100644
+--- a/dockers/docker-ptf/Dockerfile.j2
++++ b/dockers/docker-ptf/Dockerfile.j2
+@@ -22,7 +22,7 @@ ENV DEBIAN_FRONTEND=noninteractive
+ 
+ ## Set the apt source, update package cache and install necessary packages
+ ## TODO: Clean up this step
+-RUN apt-get update          \
++RUN apt-get update --allow-insecure-repositories         \
+     && apt-get upgrade -y   \
+     && apt-get dist-upgrade -y  \
+     && apt-get install -y   \
+diff --git a/dockers/docker-router-advertiser/Dockerfile.j2 b/dockers/docker-router-advertiser/Dockerfile.j2
+index d36eb7efe..89f9c4710 100644
+--- a/dockers/docker-router-advertiser/Dockerfile.j2
++++ b/dockers/docker-router-advertiser/Dockerfile.j2
+@@ -12,7 +12,7 @@ ENV DEBIAN_FRONTEND=noninteractive
+ ENV IMAGE_VERSION=$image_version
+ 
+ # Update apt's cache of available packages
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories
+ 
+ # Install radvd Debian package
+ RUN apt-get -y install radvd
+diff --git a/dockers/docker-sflow/Dockerfile.j2 b/dockers/docker-sflow/Dockerfile.j2
+index 162c4eee9..4a37395bc 100644
+--- a/dockers/docker-sflow/Dockerfile.j2
++++ b/dockers/docker-sflow/Dockerfile.j2
+@@ -6,7 +6,7 @@ ARG docker_container_name
+ ## Make apt-get non-interactive
+ ENV DEBIAN_FRONTEND=noninteractive
+ 
+-RUN apt-get update      && \
++RUN apt-get update --allow-insecure-repositories      && \
+     apt-get install -f -y  \
+             dmidecode      \
+             libmnl0=1.0.4-2
+diff --git a/dockers/docker-snmp/Dockerfile.j2 b/dockers/docker-snmp/Dockerfile.j2
+index 8465e4fb9..3f7eaa5ff 100644
+--- a/dockers/docker-snmp/Dockerfile.j2
++++ b/dockers/docker-snmp/Dockerfile.j2
+@@ -15,8 +15,8 @@ ENV IMAGE_VERSION=$image_version
+ 
+ # Update apt's cache of available packages
+ # Install make/gcc which is required for installing hiredis
+-RUN apt-get update   && \
+-    apt-get install -y  \
++RUN apt-get update --allow-insecure-repositories  && \
++    apt-get install -y --allow-unauthenticated \
+         python3-dev     \
+         gcc             \
+         make            \
+@@ -32,7 +32,7 @@ RUN apt-get update   && \
+ 
+ # Fix for hiredis compilation issues for ARM
+ # python will throw for missing locale
+-RUN apt-get install -y locales
++RUN apt-get install -y --allow-unauthenticated locales
+ RUN locale-gen "en_US.UTF-8"
+ RUN dpkg-reconfigure --frontend noninteractive locales
+ ENV LC_CTYPE=en_US.UTF-8
+diff --git a/dockers/docker-sonic-p4rt/Dockerfile.j2 b/dockers/docker-sonic-p4rt/Dockerfile.j2
+index 241f4724e..2f11de557 100644
+--- a/dockers/docker-sonic-p4rt/Dockerfile.j2
++++ b/dockers/docker-sonic-p4rt/Dockerfile.j2
+@@ -8,7 +8,7 @@ RUN [ -f /etc/rsyslog.conf ] && sed -ri "s/%syslogtag%/$docker_container_name#%s
+ ## Make apt-get non-interactive
+ ENV DEBIAN_FRONTEND=noninteractive
+ 
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories
+ 
+ {% if docker_sonic_p4rt_debs.strip() -%}
+ # Copy locally-built Debian package dependencies
+diff --git a/dockers/docker-sonic-restapi/Dockerfile.j2 b/dockers/docker-sonic-restapi/Dockerfile.j2
+index ca1a80580..5a64638ff 100644
+--- a/dockers/docker-sonic-restapi/Dockerfile.j2
++++ b/dockers/docker-sonic-restapi/Dockerfile.j2
+@@ -6,7 +6,7 @@ ARG docker_container_name
+ ## Make apt-get non-interactive
+ ENV DEBIAN_FRONTEND=noninteractive
+ 
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories 
+ 
+ {% if docker_sonic_restapi_debs.strip() -%}
+ # Copy locally-built Debian package dependencies
+diff --git a/dockers/docker-sonic-telemetry/Dockerfile.j2 b/dockers/docker-sonic-telemetry/Dockerfile.j2
+index 64d679d40..d8ae88a6b 100644
+--- a/dockers/docker-sonic-telemetry/Dockerfile.j2
++++ b/dockers/docker-sonic-telemetry/Dockerfile.j2
+@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive
+ # Pass the image_version to container
+ ENV IMAGE_VERSION=$image_version
+ 
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories
+ 
+ {% if docker_sonic_telemetry_debs.strip() -%}
+ # Copy locally-built Debian package dependencies
+diff --git a/dockers/docker-swss-layer-bullseye/Dockerfile.j2 b/dockers/docker-swss-layer-bullseye/Dockerfile.j2
+index cd250698d..c73f93380 100644
+--- a/dockers/docker-swss-layer-bullseye/Dockerfile.j2
++++ b/dockers/docker-swss-layer-bullseye/Dockerfile.j2
+@@ -4,7 +4,7 @@ FROM docker-config-engine-bullseye-{{DOCKER_USERNAME}}:{{DOCKER_USERTAG}}
+ ## Make apt-get non-interactive
+ ENV DEBIAN_FRONTEND=noninteractive
+ 
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories
+ 
+ RUN apt-get install iputils-ping
+ 
+diff --git a/dockers/docker-teamd/Dockerfile.j2 b/dockers/docker-teamd/Dockerfile.j2
+index 33cb3af92..d021e1b83 100644
+--- a/dockers/docker-teamd/Dockerfile.j2
++++ b/dockers/docker-teamd/Dockerfile.j2
+@@ -6,7 +6,7 @@ ARG docker_container_name
+ ## Make apt-get non-interactive
+ ENV DEBIAN_FRONTEND=noninteractive
+ 
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories
+ 
+ {% if docker_teamd_debs.strip() -%}
+ # Copy locally-built Debian package dependencies
+diff --git a/platform/marvell-arm64/docker-syncd-mrvl/Dockerfile.j2 b/platform/marvell-arm64/docker-syncd-mrvl/Dockerfile.j2
+index 84e3d5bde..f0692ea57 100755
+--- a/platform/marvell-arm64/docker-syncd-mrvl/Dockerfile.j2
++++ b/platform/marvell-arm64/docker-syncd-mrvl/Dockerfile.j2
+@@ -6,7 +6,7 @@ ARG docker_container_name
+ ## Make apt-get non-interactive
+ ENV DEBIAN_FRONTEND=noninteractive
+ 
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories
+ 
+ COPY \
+ {% for deb in docker_syncd_mrvl_debs.split(' ') -%}
+@@ -14,12 +14,12 @@ debs/{{ deb }}{{' '}}
+ {%- endfor -%}
+ debs/
+ 
+-RUN apt-get update \
+- && apt-get -y install  \
++RUN apt-get update --allow-insecure-repositories \
++ && apt-get -y install --allow-unauthenticated \
+     net-tools           \
+     iputils-ping
+ 
+-RUN apt-get -y install libpcap-dev libxml2-dev python-dev swig libsensors4-dev nfs-common
++RUN apt-get -y install --allow-unauthenticated libpcap-dev libxml2-dev python-dev swig libsensors4-dev nfs-common
+ 
+ RUN dpkg -i \
+ {% for deb in docker_syncd_mrvl_debs.split(' ') -%}
+diff --git a/sonic-slave-bullseye/Dockerfile.j2 b/sonic-slave-bullseye/Dockerfile.j2
+index e35287765..7a1f5bb1d 100644
+--- a/sonic-slave-bullseye/Dockerfile.j2
++++ b/sonic-slave-bullseye/Dockerfile.j2
+@@ -39,7 +39,7 @@ ARG PYTHON_CROSS_PLATFORM=linux_aarch64
+ {%- endif %}
+ 
+ RUN dpkg --add-architecture $arch
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories
+ RUN apt-get install -y crossbuild-essential-$arch
+ RUN apt-get install -y gcc-$gcc_arch
+ 
+@@ -80,7 +80,7 @@ RUN PATH=/python_virtualenv/env3/bin/:$PATH python3 -m pip uninstall -y enum34
+ RUN PATH=/python_virtualenv/env3/bin/:$PATH pip3 install --force-reinstall --no-cache-dir coverage
+ {%- endif %}
+ 
+-RUN apt-get update && apt-get install -y \
++RUN apt-get update --allow-insecure-repositories && apt-get install --allow-unauthenticated -y \
+         apt-utils \
+         default-jre-headless \
+         openssh-server \
+@@ -418,7 +418,7 @@ RUN apt-get -y build-dep openssh
+ 
+ # Build fix for ARM64 and ARMHF /etc/debian_version
+ {%- if CONFIGURED_ARCH == "armhf" or CONFIGURED_ARCH == "arm64" %}
+-RUN apt upgrade -y base-files libc-bin=$(dpkg-query -W -f '${Version}' libc-bin)
++RUN apt upgrade -y --allow-unauthenticated base-files libc-bin=$(dpkg-query -W -f '${Version}' libc-bin)
+ {%- endif %}
+ 
+ # Build fix for ARMHF bullseye libsairedis
+@@ -579,7 +579,7 @@ RUN pip3 install parameterized==0.8.1
+ RUN pip3 install pyfakefs
+ 
+ # Install docker engine 20.10 inside docker and enable experimental feature
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories
+ RUN apt-get install -y \
+            apt-transport-https \
+            ca-certificates \
+@@ -598,7 +598,7 @@ RUN add-apt-repository \
+ {%- endif %}
+            $(lsb_release -cs) \
+            stable"
+-RUN apt-get update
++RUN apt-get update --allow-insecure-repositories
+ RUN apt-get install -y docker-ce=5:20.10.14~3-0~debian-bullseye docker-ce-cli=5:20.10.14~3-0~debian-bullseye containerd.io=1.5.11-1
+ RUN echo "DOCKER_OPTS=\"--experimental --storage-driver=vfs {{ DOCKER_EXTRA_OPTS }}\"" >> /etc/default/docker
+ RUN update-alternatives --set iptables /usr/sbin/iptables-legacy
+diff --git a/src/sonic-build-hooks/scripts/pre_run_buildinfo b/src/sonic-build-hooks/scripts/pre_run_buildinfo
+index eb4d04225..f33dba132 100755
+--- a/src/sonic-build-hooks/scripts/pre_run_buildinfo
++++ b/src/sonic-build-hooks/scripts/pre_run_buildinfo
+@@ -25,6 +25,6 @@ if [ "$ENABLE_VERSION_CONTROL_DEB" == "y" ] && [ -f $VERSION_DEB_PREFERENCE ]; t
+     cp -f $VERSION_DEB_PREFERENCE /etc/apt/preferences.d/
+ fi
+ 
+-DISTRO=${DISTRO} apt-get update && apt-get install -y rsync
++DISTRO=${DISTRO} apt-get update --allow-insecure-repositories && apt-get install --allow-unauthenticated -y rsync
+ 
+ exit 0
+diff --git a/scripts/prepare_docker_buildinfo.sh b/scripts/prepare_docker_buildinfo.sh
+index ea4ce079b..f50f013ee 100755
+--- a/scripts/prepare_docker_buildinfo.sh
++++ b/scripts/prepare_docker_buildinfo.sh
+@@ -20,7 +20,10 @@ mkdir -p $BUILDINFO_VERSION_PATH
+ if [ -z "$DISTRO" ]; then
+     DOCKER_BASE_IMAGE=$(grep "^FROM" $DOCKERFILE | head -n 1 | awk '{print $2}')
+     DISTRO=$(docker run --rm --entrypoint "" $DOCKER_BASE_IMAGE cat /etc/os-release | grep VERSION_CODENAME | cut -d= -f2)
+-    [ -z "$DISTRO" ] && DISTRO=jessie
++    if [ -z "$DISTRO" ]; then
++        DISTRO=$(docker run --rm --entrypoint "" $DOCKER_BASE_IMAGE cat /etc/apt/sources.list | grep deb.debian.org | awk '{print $3}')
++        [ -z "$DISTRO" ] && DISTRO=jessie
++    fi
+ fi
+
+ if [[ "$IMAGENAME" == sonic-slave-* ]] || [[ "$IMAGENAME" == docker-base-* ]] || [[ "$IMAGENAME" == docker-ptf ]]; then

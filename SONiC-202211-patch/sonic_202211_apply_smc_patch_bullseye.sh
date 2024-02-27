@@ -23,6 +23,7 @@ SONIC_COMMIT="86c1bf5c155eb0a88c82a2adc6f4398b2794232f"
 CUR_DIR=$(basename `pwd`)
 LOG_FILE=patches_result.log
 FULL_PATH=`pwd`
+CPU_ARCH=$(lscpu | grep "Architecture:" | awk '{print $2}')
 
 # Path for 202211 patches
 WGET_PATH="https://raw.githubusercontent.com/supermicro/G3748/main/SONiC-202211-patch/"
@@ -39,6 +40,9 @@ declare -A SU3=([NAME]="github_202211_rules_update_for_g3748_20240131.tgz" [DIR]
 	
 # Patches for recent updates
 EXTRA_PATCHES="update_debootstrap_from_deb11u1_to_deb11u2.patch"
+
+# Patch of Dockerfile.j2 files to add --allow-insecure-repositories --allow-authenticated
+DOCKERFILE_j2_PATCHES="SONiC_202211_build_in_x86_server_for_G3748_extra.patch"
 
 log()
 {
@@ -109,6 +113,22 @@ apply_extra_patches()
     done
 }
 
+apply_Dockerfile_j2_patch()
+{
+    for patch in $DOCKERFILE_j2_PATCHES
+    do
+        echo $patch
+        pushd patches
+        wget -c $WGET_PATH/$patch
+        popd
+            patch -p1 < patches/$patch
+        if [ $? -ne 0 ]; then
+                log "ERROR: Failed to apply patch $patch"
+            exit 1
+        fi
+    done
+}
+
 main()
 {
     sonic_buildimage_commit=`git rev-parse HEAD`
@@ -119,7 +139,7 @@ main()
     fi
 
     if [ "${sonic_buildimage_commit}" != "$SONIC_COMMIT" ]; then
-        log "Checkout sonic-buildimage commit to proceed"
+        log "Checkout sonic-buildimage commit to proceed before 'make init'"
         log "git checkout ${SONIC_COMMIT}"
         pre_patch_help
         exit
@@ -133,6 +153,11 @@ main()
     apply_extra_patches
     # Apply submodule patches
     apply_device_platform_updates
+
+    if [ "$CPU_ARCH" == "x86_64" ]; then
+        log "Build platform is ${CPU_ARCH}. Apply Dockerfile.j2 files update."
+        apply_Dockerfile_j2_patch
+    fi
 }
 
 main $@
